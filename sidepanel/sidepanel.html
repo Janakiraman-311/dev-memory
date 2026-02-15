@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev Memory</title>
+    <link rel="stylesheet" href="sidepanel.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1>Dev Memory</h1>
+            <button id="toggleBtn" class="toggle-btn" title="Enable/Disable capture">
+                <div class="toggle-switch">
+                    <div class="toggle-slider"></div>
+                </div>
+            </button>
+        </div>
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-value" id="totalConversations">0</div>
+                <div class="stat-label">Conversations</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="totalMessages">0</div>
+                <div class="stat-label">Messages</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Left Sidebar: Conversation List -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <span>Conversations</span>
+                <button id="collapseSidebarBtn" class="collapse-btn" title="Collapse sidebar">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Search -->
+            <div class="search-section">
+                <input type="text" id="searchInput" placeholder="Search conversations..." />
+            </div>
+
+            <!-- Filters -->
+            <div class="filters" id="filtersSection">
+                <div class="filters-header">
+                    <span>Filters</span>
+                    <button id="collapseFiltersBtn" class="collapse-btn" title="Collapse filters">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="18 15 12 9 6 15"></polyline>
+                        </svg>
+                    </button>
+                </div>
+                <div class="filters-content" id="filtersContent">
+                    <div class="filter-group">
+                        <label for="sortBy">Sort:</label>
+                        <select id="sortBy">
+                            <option value="date-desc">Newest First</option>
+                            <option value="date-asc">Oldest First</option>
+                            <option value="messages-desc">Most Messages</option>
+                            <option value="messages-asc">Least Messages</option>
+                            <option value="title-asc">Title (A-Z)</option>
+                            <option value="title-desc">Title (Z-A)</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="platformFilter">Platform:</label>
+                        <select id="platformFilter">
+                            <option value="">All Platforms</option>
+                            <option value="Claude">Claude</option>
+                            <option value="ChatGPT">ChatGPT</option>
+                            <option value="Gemini">Gemini</option>
+                            <option value="Perplexity">Perplexity</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="tagFilter">Tag:</label>
+                        <select id="tagFilter">
+                            <option value="">All Tags</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Conversation List -->
+            <div class="conversation-list" id="conversationList">
+                <!-- Conversations will be rendered here -->
+            </div>
+
+            <!-- Context Staging (Updated) -->
+            <div class="context-staging hidden" id="contextStaging">
+                <div class="context-header">
+                    <h3>Context Builder <span id="contextCount">(0)</span></h3>
+                    <button id="clearContextBtn" class="text-btn">Clear All</button>
+                </div>
+
+                <!-- Format Selector -->
+                <div class="format-section">
+                    <div class="format-header">
+                        <label>Format:</label>
+                        <select id="contextFormat" class="format-select">
+                            <option value="auto">Auto-Optimize (Recommended)</option>
+                            <option value="json">JSON (Efficient)</option>
+                            <option value="xml">XML (Best Quality)</option>
+                            <option value="text">Markdown (Compact)</option>
+                        </select>
+                    </div>
+                    <div id="formatRecommendation" class="format-tip hidden">
+                        <!-- Recommendation text injected here -->
+                    </div>
+                </div>
+
+                <div class="token-usage">
+                    <div class="token-bar">
+                        <div class="token-fill" id="tokenFill" style="width: 0%"></div>
+                    </div>
+                    <span id="tokenCount">0 tokens</span>
+                </div>
+
+                <div class="staging-list" id="stagingList">
+                    <!-- Staged items -->
+                    <div class="empty-staging">
+                        <p>No conversations selected</p>
+                        <small>Click + on conversations to add them</small>
+                    </div>
+                </div>
+
+                <div class="context-actions">
+                    <button id="copyStagedBtn" class="action-btn primary full-width" disabled>
+                        Copy Context Package
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Sidebar Toggle Button (when collapsed) -->
+        <button id="expandSidebarBtn" class="expand-sidebar-btn hidden">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+        </button>
+
+        <!-- Right Main Area: Message Viewer -->
+        <main class="message-viewer">
+            <!-- Tabs -->
+            <div class="view-tabs">
+                <button class="view-tab active" data-tab="conversations">Conversations</button>
+                <button class="view-tab" data-tab="context">Context Builder</button>
+            </div>
+
+            <div id="emptyState" class="empty-state">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                </svg>
+                <h2>Select a conversation</h2>
+                <p>Choose a conversation from the list to view messages</p>
+            </div>
+
+            <div id="conversationView" class="conversation-view hidden">
+                <!-- Conversation Header -->
+                <div class="conversation-header">
+                    <div class="conversation-info">
+                        <h2 id="conversationTitle">Conversation Title</h2>
+                        <div class="conversation-meta">
+                            <span id="conversationPlatform">claude.ai</span>
+                            <span id="conversationDate">Feb 10, 2026</span>
+                            <span id="conversationMessageCount">0 messages</span>
+                        </div>
+                        <div class="conversation-tags" id="conversationTags">
+                            <!-- Tags will be rendered here -->
+                        </div>
+                    </div>
+                    <div class="conversation-actions">
+                        <button id="addToContextBtn" class="action-btn secondary" title="Add to Context Builder">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            Add
+                        </button>
+                        <button id="copyContextBtn" class="action-btn" title="Copy as Context">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                            </svg>
+                            Copy
+                        </button>
+                        <button id="exportConvBtn" class="action-btn" title="Export">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
+                            </svg>
+                            Export
+                        </button>
+                        <button id="deleteConvBtn" class="action-btn danger" title="Delete">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="3 6 5 6 21 6" />
+                                <path
+                                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                            </svg>
+                            Delete
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Messages -->
+                <div class="messages" id="messagesContainer">
+                    <!-- Messages will be rendered here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Delete Confirmation Dialog -->
+    <div id="deleteDialog" class="dialog hidden">
+        <div class="dialog-content">
+            <h3>Delete Conversation?</h3>
+            <p>This action cannot be undone.</p>
+            <div class="dialog-actions">
+                <button id="deleteCancel" class="btn-secondary">Cancel</button>
+                <button id="deleteConfirm" class="btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../utils.js"></script>
+    <script src="../utils/tokenizer.js"></script>
+    <script src="../storage.js"></script>
+    <script src="../context-builder.js"></script>
+    <script src="sidepanel.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,29 @@
+# OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node (if you add build tools later)
+node_modules/
+package-lock.json
+
+# Temporary files
+*.log
+*.tmp
+.cache/
+
+# User data (don't commit test conversations)
+*.json.bak
+
+# Python cache (from resize_icons.py)
+__pycache__/
+*.pyc
+
+# Brain artifacts (development notes)
+.gemini/
