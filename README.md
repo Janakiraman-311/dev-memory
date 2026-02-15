@@ -9,6 +9,7 @@ A Chrome extension that automatically captures and stores your AI conversations 
    - ChatGPT.com
    - Gemini (Google)
    - Perplexity.ai
+
 🗄️ **Local Storage** - All data stored locally in Chrome Storage (100% privacy, no cloud).
 🔍 **Search & Filter** - Quickly find past conversations by keyword, platform, or tag.
 🚀 **Launch AI** - Quick access dropdown to launch your favorite AI tools.
