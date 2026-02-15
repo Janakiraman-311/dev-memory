@@ -383,6 +383,141 @@ async function copyStagedContext() {
     }
 }
 
+
+
+/**
+ * Populate tag filter dropdown
+ */
+async function populateTagFilter() {
+    const tagFilter = document.getElementById('tagFilter');
+    const currentValue = tagFilter.value;
+
+    const tags = await simpleStorage.getAllTags();
+
+    // Clear and rebuild options
+    tagFilter.innerHTML = '<option value="">All Tags</option>';
+    tags.forEach(tag => {
+        const option = document.createElement('option');
+        option.value = tag;
+        option.textContent = tag;
+        tagFilter.appendChild(option);
+    });
+
+    // Restore selection if still valid
+    if (currentValue && tags.includes(currentValue)) {
+        tagFilter.value = currentValue;
+    }
+}
+
+/**
+ * Load and display messages for a conversation
+ */
+async function loadMessages(conversationId) {
+    const messages = await simpleStorage.getMessages(conversationId);
+    const conversation = allConversations.find(c => c.conversationId === conversationId);
+
+    if (!conversation) return;
+
+    // Update conversation view header
+    document.getElementById('conversationTitle').textContent = conversation.title;
+    document.getElementById('conversationPlatform').textContent = conversation.platform || 'Unknown';
+    document.getElementById('conversationMessageCount').textContent = `${messages.length} messages`;
+
+    // Render messages
+    renderMessages(messages);
+
+    // Show conversation view, hide empty state
+    document.getElementById('conversationView').classList.remove('hidden');
+    document.getElementById('emptyState').classList.add('hidden');
+}
+
+/**
+ * Render messages in the conversation view
+ */
+function renderMessages(messages) {
+    const container = document.getElementById('messagesContainer');
+
+    if (!container) {
+        console.error('messagesContainer element not found in HTML');
+        return;
+    }
+
+    if (!messages || messages.length === 0) {
+        container.innerHTML = '<div class="empty-messages">No messages found</div>';
+        return;
+    }
+
+    container.innerHTML = messages.map(msg => `
+        <div class="message ${msg.role}">
+            <div class="message-header">
+                <span class="message-role">${msg.role === 'user' ? 'You' : 'Assistant'}</span>
+                <span class="message-time">${formatTimestamp(msg.timestamp)}</span>
+            </div>
+            <div class="message-content">${escapeHtml(msg.content)}</div>
+        </div>
+    `).join('');
+}
+
+/**
+ * Escape HTML to prevent XSS
+ */
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+/**
+ * Update statistics
+ */
+async function updateStats() {
+    const analytics = await simpleStorage.getAnalytics();
+
+    if (analytics) {
+        document.getElementById('totalConversations').textContent = analytics.totalConversations;
+        document.getElementById('totalMessages').textContent = analytics.totalMessages;
+    }
+}
+
+/**
+ * Select and display a conversation
+ */
+async function selectConversation(conversationId) {
+    selectedConversationId = conversationId;
+
+    // Highlight selected conversation
+    document.querySelectorAll('.conversation-item').forEach(item => {
+        item.classList.toggle('active', item.dataset.id === conversationId);
+    });
+
+    // Load and display messages
+    await loadMessages(conversationId);
+}
+
+/**
+ * Sort conversations based on selected criteria
+ */
+function sortConversations(conversations, sortBy) {
+    const sorted = [...conversations];
+
+    switch (sortBy) {
+        case 'date-desc':
+            return sorted.sort((a, b) => (b.updatedAt || b.createdAt) - (a.updatedAt || a.createdAt));
+        case 'date-asc':
+            return sorted.sort((a, b) => (a.updatedAt || a.createdAt) - (b.updatedAt || b.createdAt));
+        case 'messages-desc':
+            return sorted.sort((a, b) => (b.messageCount || 0) - (a.messageCount || 0));
+        case 'messages-asc':
+            return sorted.sort((a, b) => (a.messageCount || 0) - (b.messageCount || 0));
+        case 'title-asc':
+            return sorted.sort((a, b) => a.title.localeCompare(b.title));
+        case 'title-desc':
+            return sorted.sort((a, b) => b.title.localeCompare(a.title));
+        default:
+            return sorted;
+    }
+}
+
 /**
  * Load conversations
  */
