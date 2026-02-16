@@ -175,25 +175,52 @@ dev-memory-extension/
 
 ## Roadmap
 
-### v1.1 (Planned)
-- [ ] Advanced search with filters (date range, message count)
+### ✅ Completed
+- [x] Multi-platform capture (Claude, ChatGPT, Gemini, Perplexity)
+- [x] Local storage with privacy-first approach
+- [x] Export to JSON/Markdown/HTML formats
+- [x] Search and filtering by platform, date, keywords
+- [x] Platform selector dropdown for quick access
+- [x] Tag-based organization
+- [x] Side panel UI with conversation browsing
+- [x] Modern glassmorphism onboarding page
+
+### 🚧 In Progress
+- [ ] Context Builder for IDE injection
+- [ ] Token estimation and optimization
+- [ ] Auto-synthesis of conversations to numbered points
+- [ ] Advanced search with date range filters
+
+### 🔮 Planned
+
+#### v1.1 (Next Release)
 - [ ] Conversation notes and annotations
 - [ ] Keyboard shortcuts for quick access
 - [ ] Dark/light theme toggle
-
-### v1.2 (Planned)
 - [ ] Conversation sharing (export single conversation)
+
+#### v1.2 (Future)
+- [ ] IDE plugins (VSCode, Cursor, Windsurf)
+- [ ] Semantic search across conversations
+- [ ] Knowledge graph visualization
 - [ ] Automatic tagging suggestions
 - [ ] Statistics dashboard (usage analytics)
 - [ ] Custom export templates
 
-### v2.0 (Future)
-- [ ] Support for additional AI platforms
-- [ ] Conversation branching visualization
+#### v2.0 (Long-term Vision)
+- [ ] XML context format optimization
+- [ ] Team collaboration features
 - [ ] AI-powered conversation summaries
+- [ ] Conversation branching visualization
 - [ ] Optional cloud sync (with encryption)
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for how to suggest features or contribute.
+### 💡 Under Consideration
+- [ ] Firefox browser support
+- [ ] Mobile companion app
+- [ ] Support for additional AI platforms
+- [ ] Browser-agnostic web app version
+
+**Want to contribute?** Check [open issues](https://github.com/Janakiraman-311/dev-memory/issues) or suggest features!
 
 ## Development
 
