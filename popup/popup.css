@@ -428,7 +428,7 @@ body {
   position: absolute;
   bottom: 100%;
   left: 0;
-  right: 0;
+  min-width: 140px;
   margin-bottom: 8px;
   background: #2a2a2a;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -445,18 +445,20 @@ body {
 .export-menu button {
   display: block;
   width: 100%;
-  padding: 10px 16px;
+  padding: 12px 16px;
   background: none;
   border: none;
-  color: #e0e0e0;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
   text-align: left;
   cursor: pointer;
-  font-size: 14px;
   transition: background 0.2s;
 }
 
 .export-menu button:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(102, 126, 234, 0.2);
+  color: #ffffff;
 }
 
 /* Dialogs */
