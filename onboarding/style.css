@@ -344,15 +344,15 @@ section {
     justify-content: center;
 }
 
+.platform-logo img,
 .platform-logo svg {
     width: 48px;
     height: 48px;
-    color: var(--accent);
     transition: all 0.3s;
 }
 
+.platform-card:hover .platform-logo img,
 .platform-card:hover .platform-logo svg {
-    color: var(--accent-light);
     transform: scale(1.1);
 }
 
