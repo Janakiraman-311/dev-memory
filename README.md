@@ -1,5 +1,9 @@
 # Dev Memory - Your AI Conversation Library
 
+[![Available in the Microsoft Edge Add-ons Store](https://img.shields.io/badge/Edge%20Add--ons-Available-blue?logo=microsoft-edge)](https://microsoftedge.microsoft.com/addons/detail/mdhocmgamippibldedfddfofnekmfjkc)
+
+> 🚀 **[Install from Microsoft Edge Add-ons Store](https://microsoftedge.microsoft.com/addons/detail/mdhocmgamippibldedfddfofnekmfjkc)**
+
 A browser extension that automatically captures and organizes your conversations from ChatGPT, Claude, Gemini, and Perplexity—all stored privately on your device.
 
 ## Why Dev Memory?
