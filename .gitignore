@@ -27,3 +27,6 @@ __pycache__/
 
 # Brain artifacts (development notes)
 .gemini/
+
+# Release packages (distribute via Edge Add-ons, not git)
+*.zip
